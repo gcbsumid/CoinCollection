@@ -96,6 +96,13 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.commemorative, Toast.LENGTH_SHORT);
+
+                } else if (position == 1) {
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.circulation, Toast.LENGTH_SHORT);
+                }
+
                 selectItem(position);
             }
         });
@@ -104,10 +111,8 @@ public class NavigationDrawerFragment extends Fragment {
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
                 new String[]{
-                        getString(R.string.circulated_coin),
-                        getString(R.string.special_collection),
-                        getString(R.string.bank_notes),
-                        getString(R.string.desired_coins),
+                        getString(R.string.circulation),
+                        getString(R.string.commemorative),
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;

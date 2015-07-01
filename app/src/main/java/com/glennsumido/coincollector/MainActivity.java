@@ -1,11 +1,13 @@
 package com.glennsumido.coincollector;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.Fragment;
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 import com.glennsumido.coincollector.enums.CollectionTypeEnum;
 import com.glennsumido.coincollector.fragments.CountrySelectionFragment;
 import com.glennsumido.coincollector.fragments.NavigationDrawerFragment;
+import com.glennsumido.coincollector.fragments.SetSelectionFragment;
 
 
 public class MainActivity extends ActionBarActivity
@@ -44,33 +47,32 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+
+        FragmentManager fragmentManager = this.getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, SetSelectionFragment.newInstance())
+//                .replace(R.id.container, CountrySelectionFragment.newInstance(col_type))
+                .commit();
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         // Todo: Replace PlaceholderFragment with the actual fragments for each fragment
+        onSectionAttached(position);
 
         CollectionTypeEnum col_type = CollectionTypeEnum.values()[position];
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, CountrySelectionFragment.newInstance(col_type))
-                .commit();
     }
 
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
-                mTitle = getString(R.string.circulated_coin);
+                mTitle = getString(R.string.circulation);
                 break;
             case 2:
-                mTitle = getString(R.string.special_collection);
+                mTitle = getString(R.string.commemorative);
                 break;
-            case 3:
-                mTitle = getString(R.string.bank_notes);
-                break;
-            case 4:
-                mTitle = getString(R.string.desired_coins);
         }
     }
 
@@ -108,37 +110,6 @@ public class MainActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Main fragment containing to select either commemorative or circulation coins.
-     */
-    public static class MainFragment extends Fragment {
-
-        public static MainFragment newInstance() {
-            MainFragment fragment = new MainFragment();
-//            Bundle args = new Bundle();
-//            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-//            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public MainFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-//            ((MainActivity) activity).onSectionAttached(
-//                    getArguments().getInt(ARG_SECTION_NUMBER));
-        }
     }
 
 }

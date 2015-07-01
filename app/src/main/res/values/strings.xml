@@ -1,11 +1,8 @@
 <resources>
     <string name="app_name">Coin Collector</string>
 
-    <string name="circulated_coin">Circulated Coin Collection
-</string>
-    <string name="special_collection">Special Coin Collection</string>
-    <string name="bank_notes">Bank Notes Collection</string>
-    <string name="desired_coins">Desired Coins</string>
+    <string name="commemorative">Commemorative Coins</string>
+    <string name="circulation">Circulation Coins</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -13,4 +10,7 @@
     <string name="action_example">Example action</string>
 
     <string name="action_settings">Settings</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
