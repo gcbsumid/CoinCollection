@@ -1,8 +1,11 @@
 package com.glennsumido.coincollector.database;
 
+import android.content.res.XmlResourceParser;
+import android.util.Log;
 import android.util.Xml;
 
 import com.glennsumido.coincollector.objects.Country;
+import com.google.android.gms.analytics.Logger;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -18,15 +21,14 @@ import java.util.ArrayList;
 public class CountryXmlParser {
     private static final String ns = null;
 
-    public static ArrayList<Country> parse(XmlPullParser parser) throws XmlPullParserException, IOException {
+    public static ArrayList<Country> parse(XmlResourceParser parser) throws XmlPullParserException, IOException {
         return readFeed(parser);
     }
 
-    private static ArrayList<Country> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException{
+    private static ArrayList<Country> readFeed(XmlResourceParser parser) throws XmlPullParserException, IOException{
         ArrayList<Country> countries = new ArrayList<>();
 
-        parser.require(XmlPullParser.START_TAG, ns, "countries");
-        while (parser.next() != XmlPullParser.END_TAG) {
+        while (parser.next() != XmlPullParser.END_DOCUMENT) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             }
@@ -34,14 +36,12 @@ public class CountryXmlParser {
             String name = parser.getName();
             if (name.equals("country")) {
                 countries.add(readCountry(parser));
-            } else {
-                skip(parser);
             }
         }
         return countries;
     }
 
-    private static Country readCountry(XmlPullParser parser) throws IOException, XmlPullParserException {
+    private static Country readCountry(XmlResourceParser parser) throws IOException, XmlPullParserException {
         Country country = Country.newInstance("NA", "NA", "NA");
 
         parser.require(XmlPullParser.START_TAG, ns, "country");
@@ -54,26 +54,9 @@ public class CountryXmlParser {
                 country = Country.newInstance(countryCode, countryName, currencyCode);
             }
         }
-        parser.require(XmlPullParser.END_TAG, ns, "country");
+//        Log.i("XmlParser", String.format("Country: %s", countryName));
 
         // Todo: this should never be "NA" for the country
         return country;
-    }
-
-    private static void skip(XmlPullParser parser) throws XmlPullParserException, IOException{
-        if (parser.getEventType() != XmlPullParser.START_TAG) {
-            throw new IllegalStateException();
-        }
-        int depth = 1;
-        while (depth != 0) {
-            switch (parser.next()) {
-                case XmlPullParser.END_TAG:
-                    depth--;
-                    break;
-                case XmlPullParser.START_TAG:
-                    depth++;
-                    break;
-            }
-        }
     }
 }
