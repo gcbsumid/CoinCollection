@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +24,7 @@ import com.glennsumido.coincollector.fragments.SetSelectionFragment;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+    private static final String TAG = "MainActivity";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -48,7 +50,6 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-
         FragmentManager fragmentManager = this.getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, SetSelectionFragment.newInstance())
@@ -61,6 +62,24 @@ public class MainActivity extends ActionBarActivity
         // update the main content by replacing fragments
         // Todo: Replace PlaceholderFragment with the actual fragments for each fragment
         onSectionAttached(position);
+
+        CollectionTypeEnum type = null;
+        switch (position) {
+            case 0:
+                type = CollectionTypeEnum.CIRCULATION;
+                break;
+            case 1:
+                type = CollectionTypeEnum.COMMEMORATIVE;
+                break;
+            default:
+                Log.e(TAG, "Invalid Navigation Drawer option pressed.");
+        }
+
+        FragmentManager fragmentManager = this.getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, CountrySelectionFragment.newInstance(type))
+                .addToBackStack(null)
+                .commit();
 
         CollectionTypeEnum col_type = CollectionTypeEnum.values()[position];
     }
@@ -105,9 +124,9 @@ public class MainActivity extends ActionBarActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

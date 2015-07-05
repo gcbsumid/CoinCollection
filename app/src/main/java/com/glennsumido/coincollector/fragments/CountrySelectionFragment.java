@@ -3,9 +3,11 @@ package com.glennsumido.coincollector.fragments;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.content.res.XmlResourceParser;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Xml;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +23,10 @@ import com.glennsumido.coincollector.objects.Country;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class CountrySelectionFragment extends Fragment {
@@ -96,11 +100,11 @@ public class CountrySelectionFragment extends Fragment {
     private class ProcessCountriesTask extends AsyncTask<Void, Void, ArrayList<Country>> {
         @Override
         protected ArrayList<Country> doInBackground(Void... params) {
-            Resources res = getActivity().getResources();
             ArrayList<Country> list = new ArrayList<>();
 
             try {
-                XmlPullParser parser = res.getXml(R.xml.country_codes);
+                XmlResourceParser parser = getResources().getXml(R.xml.country_codes);
+
                 list = CountryXmlParser.parse(parser);
             } catch (XmlPullParserException e) {
                 e.printStackTrace();
