@@ -1,7 +1,9 @@
 package com.glennsumido.coincollector.fragments;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.net.Uri;
@@ -12,10 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.app.Fragment;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.glennsumido.coincollector.R;
 
+import com.glennsumido.coincollector.activities.CoinTableActivity;
 import com.glennsumido.coincollector.adapters.CountryAdapter;
 import com.glennsumido.coincollector.database.CountryXmlParser;
 import com.glennsumido.coincollector.enums.CollectionTypeEnum;
@@ -29,13 +33,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-public class CountrySelectionFragment extends Fragment {
+public class CountrySelectionFragment extends Fragment implements ListView.OnItemClickListener{
     private static final String COLLECTION_TYPE = "collection_type";
 
     private CollectionTypeEnum mCollectionType;
     private ListView mCountryListView;
 
     private ProcessCountriesTask mProcessCountriesTask;
+    private CountryAdapter mAdapter;
 
     /**
      * Use this factory method to create a new instance of
@@ -61,10 +66,12 @@ public class CountrySelectionFragment extends Fragment {
         if (getArguments() != null) {
             mCollectionType = (CollectionTypeEnum) getArguments().getSerializable(COLLECTION_TYPE);
         }
+        mAdapter = new CountryAdapter(getActivity().getApplicationContext());
 
         mProcessCountriesTask = new ProcessCountriesTask();
         // Processes xml to get task
         mProcessCountriesTask.execute();
+
     }
 
     @Override
@@ -74,6 +81,7 @@ public class CountrySelectionFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_country_selection, container, false);
 
         mCountryListView = (ListView) view.findViewById(R.id.countryListView);
+        mCountryListView.setOnItemClickListener(this);
 
         return view;
     }
@@ -92,6 +100,16 @@ public class CountrySelectionFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Country country = (Country) mAdapter.getItem(position);
+        Intent intent = new Intent(getActivity(), CoinTableActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("COUNTRY", country);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     /**
@@ -116,7 +134,8 @@ public class CountrySelectionFragment extends Fragment {
 
         @Override
         protected void onPostExecute(ArrayList<Country> result) {
-            mCountryListView.setAdapter(new CountryAdapter(getActivity(), result));
+            mAdapter.setCountries(result);
+            mCountryListView.setAdapter(mAdapter);
         }
     }
 }

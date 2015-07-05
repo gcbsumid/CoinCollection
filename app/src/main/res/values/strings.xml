@@ -10,7 +10,15 @@
     <string name="action_example">Example action</string>
 
     <string name="action_settings">Settings</string>
+    <string name="action_add_denomination">Add Denomination</string>
+
+    <string name="country">COUNTRY</string>
+    <string name="country_code">COUNTRY_CODE</string>
+    <string name="country_name">COUNTRY_NAME</string>
+    <string name="country_currency_code">COUNTRY_CURRENCY_CODE</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_coin_table">CoinTableActivity</string>
+    <string name="hello_world">Hello world!</string>
 </resources>

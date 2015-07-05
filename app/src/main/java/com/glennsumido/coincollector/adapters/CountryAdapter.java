@@ -1,6 +1,8 @@
 package com.glennsumido.coincollector.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.glennsumido.coincollector.R;
+import com.glennsumido.coincollector.activities.CoinTableActivity;
 import com.glennsumido.coincollector.objects.Country;
 
 import java.util.ArrayList;
@@ -17,15 +20,18 @@ import java.util.ArrayList;
  * Created by christian on 6/21/15.
  */
 public class CountryAdapter extends BaseAdapter{
-    // Todo: This
     Context mContext;
     ArrayList<Country> mCountries;
     LayoutInflater mInflater;
 
-    public CountryAdapter(Context context, ArrayList<Country> countries) {
+    public CountryAdapter(Context context) {
         mContext = context;
-        mCountries = countries;
         mInflater = LayoutInflater.from(mContext);
+        mCountries = new ArrayList<>();
+    }
+
+    public void setCountries(ArrayList<Country> countries) {
+        mCountries = countries;
     }
 
     @Override
@@ -35,7 +41,7 @@ public class CountryAdapter extends BaseAdapter{
 
     @Override
     public Object getItem(int position) {
-        return position;
+        return mCountries.get(position);
     }
 
     @Override
@@ -54,8 +60,8 @@ public class CountryAdapter extends BaseAdapter{
         TextView currencyCode = (TextView) contentView.findViewById(R.id.currency_code);
 
         Country country = mCountries.get(position);
-        countryName.setText(country.GetCountryName());
-        currencyCode.setText(country.GetCurrencyCode());
+        countryName.setText(country.getCountryName());
+        currencyCode.setText(country.getCurrencyCode());
 
         return contentView;
     }

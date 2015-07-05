@@ -56,7 +56,10 @@ public class CountryXmlParser {
         }
 //        Log.i("XmlParser", String.format("Country: %s", countryName));
 
-        // Todo: this should never be "NA" for the country
+        if (country.getCountryCode().equals(("NA"))) {
+            Log.i("XmlParser", "Empty :(");
+//            throw new XmlPullParserException("Country is empty.");
+        }
         return country;
     }
 }

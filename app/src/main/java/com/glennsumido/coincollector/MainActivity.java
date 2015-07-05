@@ -60,7 +60,6 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        // Todo: Replace PlaceholderFragment with the actual fragments for each fragment
         onSectionAttached(position);
 
         CollectionTypeEnum type = null;
